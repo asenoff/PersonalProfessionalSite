@@ -1,44 +1,112 @@
 ---
 import { getCollection } from "astro:content";
-import ContentCard from "../components/ContentCard.astro";
+import Icon from "../components/Icon.astro";
 import Section from "../components/Section.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 
 const workItems = (await getCollection("work")).sort(
   (a, b) => a.data.order - b.data.order
 );
+
+const workSignals = [
+  {
+    icon: "database",
+    title: "Data-intensive systems",
+    text: "SQL Server reporting, data mapping, and performance work where correctness cannot drift.",
+  },
+  {
+    icon: "shield",
+    title: "High-stakes delivery",
+    text: "Public-sector and banking systems shaped by regulation, deadlines, and operational risk.",
+  },
+  {
+    icon: "layers",
+    title: "End-to-end ownership",
+    text: "Integrations and operational workflows carried from design through deployment and support.",
+  },
+] as const;
+
+const workCaseIcons = ["database", "shield", "layers"] as const;
 ---
 
 <MainLayout
   title="Work"
-  description="Placeholder work page with case study previews for data-intensive and production-critical backend systems."
+  description="Selected case studies covering public-sector reporting, enterprise banking, and operational ERP integration work."
 >
-  <section class="hero">
-    <p class="eyebrow">Work</p>
-    <h1>Work</h1>
-    <p>
-      Placeholder introduction for case studies. The list below is content-driven so each
-      item already supports a future detail page.
-    </p>
+  <section class="hero work-hero">
+    <div class="work-hero-copy">
+      <p class="eyebrow">Work</p>
+      <h1>Selected work on systems that had to stay correct, stable, and useful.</h1>
+      <p>
+        {workItems.length} case studies spanning public-sector reporting, enterprise
+        banking, and operational ERP integration.
+      </p>
+      <p class="button-row">
+        <a class="button-link" href="#case-studies">Browse case studies</a>
+        <a class="button-link button-link--ghost" href="/contact">Discuss a project</a>
+      </p>
+    </div>
+
+    <aside class="work-hero-panel" aria-label="Experience focus">
+      <p class="work-panel-eyebrow">Experience focus</p>
+      <ul class="work-signal-list">
+        {workSignals.map((signal) => (
+          <li class="work-signal-item">
+            <span class="work-signal-icon" aria-hidden="true">
+              <Icon name={signal.icon} />
+            </span>
+            <div class="work-signal-copy">
+              <p class="work-signal-title">{signal.title}</p>
+              <p class="work-signal-text">{signal.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </aside>
   </section>
 
-  <Section title="Intro">
-    <p>
-      Sample work entries for backend, SQL Server, integration, and legacy-system
-      improvement projects.
-    </p>
-  </Section>
+  <Section
+    id="case-studies"
+    title="Selected case studies"
+    intro="A concise view of the kinds of systems I help improve when reliability, trade-offs, and delivery pressure all matter at once."
+    className="work-case-section"
+  >
+    <div class="work-case-grid">
+      {workItems.map((item, index) => {
+        const href = `/work/${item.slug}`;
+        const caseNumber = String(index + 1).padStart(2, "0");
+        const iconName = workCaseIcons[index] ?? "briefcase";
 
-  <Section title="Selected case studies">
-    <div class="card-grid">
-      {workItems.map((item) => (
-        <ContentCard
-          title={item.data.title}
-          summary={item.data.summary}
-          href={`/work/${item.slug}`}
-          tags={item.data.tags}
-        />
-      ))}
+        return (
+          <article class="work-case-card">
+            <div class="work-case-head">
+              <div class="work-case-heading">
+                <p class="work-case-label">Case study {caseNumber}</p>
+                <h3 class="work-case-title">
+                  <a href={href}>{item.data.title}</a>
+                </h3>
+              </div>
+              <span class="work-case-icon" aria-hidden="true">
+                <Icon name={iconName} />
+              </span>
+            </div>
+
+            <p class="work-case-summary">{item.data.summary}</p>
+
+            {item.data.tags.length > 0 && (
+              <ul class="tag-list" aria-label={`Tags for ${item.data.title}`}>
+                {item.data.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+            )}
+
+            <p class="work-case-link-row">
+              <a class="work-case-link" href={href}>Read the case study</a>
+            </p>
+          </article>
+        );
+      })}
     </div>
   </Section>
 </MainLayout>
