@@ -53,7 +53,9 @@ const articleItems = (await getCollection("articles"))
         />
       ))}
     </div>
-    <p><a href="/work">View all work</a></p>
+    <p class="button-row">
+      <a class="button-link button-link--ghost" href="/work">View all work</a>
+    </p>
   </Section>
 
   <Section title="Writing preview">
@@ -67,7 +69,9 @@ const articleItems = (await getCollection("articles"))
         />
       ))}
     </div>
-    <p><a href="/articles">View all articles</a></p>
+    <p class="button-row">
+      <a class="button-link button-link--ghost" href="/articles">View all articles</a>
+    </p>
   </Section>
 
   <Section title="Video introduction preview">
@@ -75,14 +79,18 @@ const articleItems = (await getCollection("articles"))
       Placeholder section for a short introduction video and a longer presentation video.
       The dedicated videos page will hold embeds or links later.
     </p>
-    <p><a href="/videos">Go to videos</a></p>
+    <p class="button-row">
+      <a class="button-link button-link--secondary" href="/videos">Go to videos</a>
+    </p>
   </Section>
 
-  <Section title="CTA">
+  <Section title="CTA" className="section-callout">
     <p>
       Placeholder call to action for teams that need senior backend help on data-intensive
       or production-critical systems.
     </p>
-    <p><a href="/contact">Start a conversation</a></p>
+    <p class="button-row">
+      <a class="button-link" href="/contact">Start a conversation</a>
+    </p>
   </Section>
 </MainLayout>

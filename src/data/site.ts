@@ -12,7 +12,7 @@ export const siteConfig = {
     "10+ years in .NET and SQL Server, focused on backend development, query analysis, reporting performance, and legacy system improvement.",
   availability:
     "Open to fully remote part-time opportunities, around 4 hours per day.",
-  siteUrl: "https://example.com",
+  siteUrl: "https://asenoff.net",
   defaultTitle: "Kaloyan Asenov | Senior .NET Backend Engineer",
   defaultDescription:
     "Personal professional site for Kaloyan Asenov, a senior .NET backend engineer focused on data-intensive and production-critical systems."

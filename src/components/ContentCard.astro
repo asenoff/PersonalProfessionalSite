@@ -10,10 +10,10 @@ const { title, summary, href, tags = [] } = Astro.props;
 ---
 
 <article class="content-card">
-  <h3>
+  <h3 class="content-card-title">
     <a href={href}>{title}</a>
   </h3>
-  <p>{summary}</p>
+  <p class="content-card-summary">{summary}</p>
   {tags.length > 0 && (
     <ul class="tag-list" aria-label="Tags">
       {tags.map((tag) => (

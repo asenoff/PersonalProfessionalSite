@@ -29,9 +29,10 @@ const {
       ogType={ogType}
     />
   </head>
-  <body>
+  <body class="site-shell">
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <SiteHeader currentPath={Astro.url.pathname} />
-    <main class="container page-content">
+    <main id="main-content" class="container page-content">
       <slot />
     </main>
     <SiteFooter />

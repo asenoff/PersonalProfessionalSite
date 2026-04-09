@@ -18,12 +18,12 @@ const isActive = (href: string) => {
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="site-brand" href="/">
-      <span>{siteConfig.name}</span>
-      <small>{siteConfig.jobTitle}</small>
+    <a class="site-brand" href="/" aria-label={`${siteConfig.name} home`}>
+      <span class="site-brand-name">{siteConfig.name}</span>
+      <small class="site-brand-role">{siteConfig.jobTitle}</small>
     </a>
 
-    <nav aria-label="Primary">
+    <nav class="site-nav" aria-label="Primary">
       <ul class="nav-list">
         {navItems.map((item) => (
           <li>
