@@ -1,45 +1,351 @@
 ---
+import Icon from "../components/Icon.astro";
 import Section from "../components/Section.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-import { contactMethods, siteConfig } from "../data/site";
+import {
+  contactAvailability,
+  contactFormTopics,
+  contactMethods
+} from "../data/site";
 ---
 
 <MainLayout
   title="Contact"
-  description="Placeholder contact page for remote part-time .NET backend opportunities."
+  description="Contact Kaloyan Asenov for fully remote part-time .NET backend work, consulting, and serious technical conversations."
 >
-  <section class="hero">
+  <section class="hero contact-hero">
     <p class="eyebrow">Contact</p>
-    <h1>Contact</h1>
+    <h1>Contact for remote part-time opportunities</h1>
     <p>
-      Placeholder contact page for fully remote part-time opportunities and focused backend
-      engineering conversations.
+      I am primarily interested in fully remote work where senior backend help is needed
+      on production-critical .NET systems, SQL Server-heavy applications, and focused
+      improvement work inside existing codebases.
     </p>
+    <div class="button-row contact-hero-actions">
+      <a class="button-link" href="#contact-form">
+        <Icon name="send" />
+        Use the contact form
+      </a>
+      <a
+        class="button-link button-link--ghost"
+        href="https://www.linkedin.com/in/asenoff/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Icon name="linkedin" />
+        Connect on LinkedIn
+      </a>
+    </div>
   </section>
 
-  <Section title="Intro">
+  <Section title="Availability" className="availability-block">
     <p>
-      This page is set up for direct outreach, project-fit details, and a short availability
-      summary.
+      I currently have room for fully remote part-time engagements. Working overlap is
+      available between {contactAvailability.window}, and a focused 4-hour block can be
+      agreed inside that range depending on the role and the team.
     </p>
+
+    <div class="availability-metrics">
+      <article class="availability-stat">
+        <span class="icon-badge">
+          <Icon name="clock" />
+        </span>
+        <div>
+          <h3>Working window</h3>
+          <p>{contactAvailability.window}</p>
+        </div>
+      </article>
+
+      <article class="availability-stat">
+        <span class="icon-badge">
+          <Icon name="briefcase" />
+        </span>
+        <div>
+          <h3>Capacity</h3>
+          <p>{contactAvailability.capacity}</p>
+        </div>
+      </article>
+
+      <article class="availability-stat">
+        <span class="icon-badge">
+          <Icon name="shield" />
+        </span>
+        <div>
+          <h3>Engagement model</h3>
+          <p>{contactAvailability.model}</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="availability-timeline" aria-label="Availability between 08:00 and 20:00 CET">
+      <div class="availability-track">
+        <span class="availability-track-fill"></span>
+      </div>
+      <div class="availability-hours" aria-hidden="true">
+        <span>08:00</span>
+        <span>12:00</span>
+        <span>16:00</span>
+        <span>20:00</span>
+      </div>
+      <p class="availability-note">{contactAvailability.note}</p>
+    </div>
   </Section>
 
-  <Section title="Availability section" className="section-callout">
-    <p>{siteConfig.availability}</p>
-  </Section>
-
-  <Section title="Contact methods placeholder">
-    <ul class="simple-list">
+  <Section
+    title="Direct contact options"
+    intro="Use the channel that fits the conversation best. The email address is intentionally masked on the page and only reconstructed when copied."
+  >
+    <div class="contact-method-grid">
       {contactMethods.map((method) => (
-        <li>{method}</li>
+        <article class="contact-method-card">
+          <div class="contact-method-head">
+            <span class="icon-badge icon-badge--contact">
+              <Icon name={method.icon} />
+            </span>
+            <div class="contact-method-copy">
+              <h3>{method.title}</h3>
+              <p>{method.description}</p>
+            </div>
+          </div>
+
+          <p class="contact-method-value">{method.value}</p>
+
+          <div class="button-row">
+            {method.copyOnly ? (
+              <button
+                class="button-link button-link--ghost"
+                type="button"
+                data-copy-email
+                aria-describedby="contact-email-note"
+              >
+                <Icon name="copy" />
+                {method.actionLabel}
+              </button>
+            ) : (
+              <a
+                class="button-link button-link--ghost"
+                href={method.href}
+                target={method.external ? "_blank" : undefined}
+                rel={method.external ? "noopener noreferrer" : undefined}
+              >
+                <Icon name={method.icon} />
+                {method.actionLabel}
+              </a>
+            )}
+          </div>
+        </article>
       ))}
-    </ul>
+    </div>
+    <p id="contact-email-note" class="contact-note" data-copy-status aria-live="polite">
+      The copy button reconstructs the email address in the browser instead of exposing it
+      directly in the page markup.
+    </p>
   </Section>
 
-  <Section title="CTA for remote part-time opportunities" className="section-callout">
-    <p>
-      Placeholder call to action for companies that need senior backend help on a focused,
-      remote, part-time basis.
-    </p>
+  <Section
+    id="contact-form"
+    title="Send a message"
+    intro="Use the form below for role discussions, consulting inquiries, or targeted technical conversations."
+    className="section-callout"
+  >
+
+    <form
+      class="contact-form"
+      method="post"
+      action="/api/contact.php"
+      accept-charset="utf-8"
+      data-contact-form
+    >
+      <input type="hidden" name="form_name" value="contact" />
+      <input type="hidden" name="page_path" value="/contact" />
+      <input type="hidden" name="page_url" value="" data-page-url />
+      <input type="hidden" name="js_enabled" value="0" data-js-enabled />
+      <input type="hidden" name="form_started_at" value="" data-form-started />
+      <input type="hidden" name="submitted_at" value="" data-submitted-at />
+      <input type="hidden" name="subject_label" value="" data-subject-label />
+
+      <div class="bot-trap" aria-hidden="true">
+        <label for="company-website">Leave this field empty</label>
+        <input
+          id="company-website"
+          name="company_website"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+          data-bot-field
+        />
+      </div>
+
+      <div class="form-grid">
+        <label class="form-field">
+          <span>Name</span>
+          <input
+            type="text"
+            name="name"
+            autocomplete="name"
+            required
+            placeholder="Your name"
+          />
+        </label>
+
+        <label class="form-field">
+          <span>Work email</span>
+          <input
+            type="email"
+            name="email"
+            autocomplete="email"
+            required
+            placeholder="name@company.com"
+          />
+        </label>
+
+        <label class="form-field">
+          <span>Company or team</span>
+          <input
+            type="text"
+            name="company"
+            autocomplete="organization"
+            placeholder="Optional"
+          />
+        </label>
+
+        <label class="form-field">
+          <span>Re</span>
+          <select name="subject" required data-subject-select>
+            <option value="">Select a topic</option>
+            {contactFormTopics.map((topic) => (
+              <option value={topic.value}>{topic.label}</option>
+            ))}
+          </select>
+        </label>
+
+        <label class="form-field form-field--full">
+          <span>Message</span>
+          <textarea
+            name="message"
+            rows="7"
+            required
+            minlength="24"
+            placeholder="Share the role, the system context, the team setup, or the specific backend problem you need help with."
+          ></textarea>
+        </label>
+      </div>
+
+      <div class="contact-form-meta">
+        <div class="button-row">
+          <button class="button-link" type="submit">
+            <Icon name="send" />
+            Send message
+          </button>
+        </div>
+
+        <p class="contact-note" data-form-status aria-live="polite">
+          If you prefer not to use the form, LinkedIn and the masked email copy action are
+          available above.
+        </p>
+      </div>
+    </form>
+
+    <script is:inline>
+      (() => {
+        const emailCharCodes = [
+          107, 97, 108, 111, 121, 97, 110, 64, 97, 115, 101, 110, 111, 102, 102, 46,
+          110, 101, 116
+        ];
+        const decodeEmail = () => String.fromCharCode(...emailCharCodes);
+
+        const copyStatusNode = document.querySelector("[data-copy-status]");
+        const formStatusNode = document.querySelector("[data-form-status]");
+        const copyButton = document.querySelector("[data-copy-email]");
+        const form = document.querySelector("[data-contact-form]");
+
+        const setCopyStatus = (message) => {
+          if (copyStatusNode) {
+            copyStatusNode.textContent = message;
+          }
+        };
+
+        const setFormStatus = (message) => {
+          if (formStatusNode) {
+            formStatusNode.textContent = message;
+          }
+        };
+
+        if (copyButton instanceof HTMLButtonElement) {
+          copyButton.addEventListener("click", async () => {
+            const email = decodeEmail();
+
+            try {
+              await navigator.clipboard.writeText(email);
+              setCopyStatus("Email address copied to clipboard.");
+            } catch {
+              setCopyStatus(
+                "Copy was blocked by the browser. Please use the masked address above."
+              );
+            }
+          });
+        }
+
+        if (!(form instanceof HTMLFormElement)) {
+          return;
+        }
+
+        const startedAt = Date.now();
+        const startedField = form.querySelector("[data-form-started]");
+        const submittedField = form.querySelector("[data-submitted-at]");
+        const pageUrlField = form.querySelector("[data-page-url]");
+        const jsEnabledField = form.querySelector("[data-js-enabled]");
+        const subjectLabelField = form.querySelector("[data-subject-label]");
+        const subjectSelect = form.querySelector("[data-subject-select]");
+        const botField = form.querySelector("[data-bot-field]");
+
+        if (startedField instanceof HTMLInputElement) {
+          startedField.value = String(startedAt);
+        }
+
+        if (pageUrlField instanceof HTMLInputElement) {
+          pageUrlField.value = window.location.href;
+        }
+
+        if (jsEnabledField instanceof HTMLInputElement) {
+          jsEnabledField.value = "1";
+        }
+
+        const syncSubjectLabel = () => {
+          if (
+            subjectLabelField instanceof HTMLInputElement &&
+            subjectSelect instanceof HTMLSelectElement
+          ) {
+            subjectLabelField.value =
+              subjectSelect.options[subjectSelect.selectedIndex]?.text ?? "";
+          }
+        };
+
+        syncSubjectLabel();
+
+        if (subjectSelect instanceof HTMLSelectElement) {
+          subjectSelect.addEventListener("change", syncSubjectLabel);
+        }
+
+        form.addEventListener("submit", (event) => {
+          if (submittedField instanceof HTMLInputElement) {
+            submittedField.value = String(Date.now());
+          }
+
+          syncSubjectLabel();
+
+          if (botField instanceof HTMLInputElement && botField.value.trim() !== "") {
+            event.preventDefault();
+            setFormStatus("Message blocked.");
+            return;
+          }
+
+          if (Date.now() - startedAt < 3500) {
+            event.preventDefault();
+            setFormStatus("Please take a moment to complete the form before sending.");
+          }
+        });
+      })();
+    </script>
   </Section>
 </MainLayout>

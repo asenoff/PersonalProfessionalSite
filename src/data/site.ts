@@ -3,6 +3,22 @@ export type NavItem = {
   href: string;
 };
 
+export type ContactMethod = {
+  title: string;
+  value: string;
+  description: string;
+  icon: "github" | "linkedin" | "mail";
+  href?: string;
+  actionLabel: string;
+  external?: boolean;
+  copyOnly?: boolean;
+};
+
+export type ContactFormTopic = {
+  value: string;
+  label: string;
+};
+
 export const siteConfig = {
   name: "Kaloyan Asenov",
   jobTitle: "Senior .NET Backend Engineer",
@@ -106,8 +122,69 @@ export const videoPlaceholders = [
   }
 ];
 
-export const contactMethods = [
-  "Email placeholder",
-  "LinkedIn placeholder",
-  "GitHub placeholder"
+export const contactAvailability = {
+  window: "08:00 - 20:00 CET",
+  capacity: "Up to 4 focused hours per day",
+  model: "Fully remote, part-time collaboration",
+  note:
+    "A fixed 4-hour overlap block can be agreed inside this window depending on the team and the work."
+} as const;
+
+export const contactMethods: ContactMethod[] = [
+  {
+    title: "LinkedIn",
+    value: "linkedin.com/in/asenoff",
+    description:
+      "Best for direct professional outreach, hiring conversations, and role-fit context.",
+    icon: "linkedin",
+    href: "https://www.linkedin.com/in/asenoff/",
+    actionLabel: "Open LinkedIn",
+    external: true
+  },
+  {
+    title: "GitHub",
+    value: "github.com/asenoff",
+    description:
+      "Useful if you want to review public code, activity, or technical context before reaching out.",
+    icon: "github",
+    href: "https://github.com/asenoff",
+    actionLabel: "Open GitHub",
+    external: true
+  },
+  {
+    title: "Email",
+    value: "kaloyan[at]asenoff.net",
+    description:
+      "Displayed in a masked format here. Use the copy action or the form below for a direct message.",
+    icon: "mail",
+    actionLabel: "Copy email address",
+    copyOnly: true
+  }
+];
+
+export const contactFormTopics: ContactFormTopic[] = [
+  {
+    value: "Remote part-time .NET backend role",
+    label: "Remote part-time .NET backend role"
+  },
+  {
+    value: "Consulting or contract inquiry",
+    label: "Consulting or contract inquiry"
+  },
+  {
+    value: "SQL Server performance or reporting work",
+    label: "SQL Server performance or reporting work"
+  },
+  {
+    value: "Legacy .NET system stabilization",
+    label: "Legacy .NET system stabilization"
+  },
+  {
+    value: "Technical conversation or speaking",
+    label: "Technical conversation or speaking"
+  },
+  {
+    value: "Other",
+    label: "Other"
+  }
 ];
