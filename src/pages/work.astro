@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import ContentCard from "../components/ContentCard.astro";
+import Section from "../components/Section.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+
+const workItems = (await getCollection("work")).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<MainLayout
+  title="Work"
+  description="Placeholder work page with case study previews for data-intensive and production-critical backend systems."
+>
+  <section class="hero">
+    <p class="eyebrow">Work</p>
+    <h1>Work</h1>
+    <p>
+      Placeholder introduction for case studies. The list below is content-driven so each
+      item already supports a future detail page.
+    </p>
+  </section>
+
+  <Section title="Intro">
+    <p>
+      Sample work entries for backend, SQL Server, integration, and legacy-system
+      improvement projects.
+    </p>
+  </Section>
+
+  <Section title="List of 4 placeholder case studies">
+    <div class="card-grid">
+      {workItems.map((item) => (
+        <ContentCard
+          title={item.data.title}
+          summary={item.data.summary}
+          href={`/work/${item.slug}`}
+          tags={item.data.tags}
+        />
+      ))}
+    </div>
+  </Section>
+</MainLayout>

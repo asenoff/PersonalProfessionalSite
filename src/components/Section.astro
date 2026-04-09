@@ -1,0 +1,20 @@
+---
+interface Props {
+  title: string;
+  intro?: string;
+  id?: string;
+  className?: string;
+}
+
+const { title, intro, id, className } = Astro.props;
+---
+
+<section id={id} class={`section ${className ?? ""}`.trim()}>
+  <div class="section-heading">
+    <h2>{title}</h2>
+    {intro && <p>{intro}</p>}
+  </div>
+  <div class="section-body">
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,40 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import MainLayout from "../../layouts/MainLayout.astro";
+
+export async function getStaticPaths() {
+  const workItems = await getCollection("work");
+
+  return workItems.map((item) => ({
+    params: { slug: item.slug },
+    props: { workItem: item }
+  }));
+}
+
+const { workItem } = Astro.props as { workItem: CollectionEntry<"work"> };
+
+const { Content } = await workItem.render();
+---
+
+<MainLayout
+  title={workItem.data.title}
+  description={workItem.data.description}
+  canonicalPath={`/work/${workItem.slug}`}
+  ogType="article"
+>
+  <article class="detail-content">
+    <p class="eyebrow">Work</p>
+    <h1>{workItem.data.title}</h1>
+    <p class="lead">{workItem.data.summary}</p>
+
+    <ul class="tag-list" aria-label="Tags">
+      {workItem.data.tags.map((tag) => (
+        <li>{tag}</li>
+      ))}
+    </ul>
+
+    <Content />
+
+    <p><a href="/work">Back to work</a></p>
+  </article>
+</MainLayout>

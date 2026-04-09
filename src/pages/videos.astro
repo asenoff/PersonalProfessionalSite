@@ -1,0 +1,33 @@
+---
+import Section from "../components/Section.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { videoPlaceholders } from "../data/site";
+---
+
+<MainLayout
+  title="Videos"
+  description="Placeholder videos page for an introductory video and a longer presentation about backend engineering work."
+>
+  <section class="hero">
+    <p class="eyebrow">Videos</p>
+    <h1>Videos</h1>
+    <p>
+      Placeholder video page for future embeds, hosted recordings, or external links.
+    </p>
+  </section>
+
+  <Section title="Intro">
+    <p>
+      Initial structure for video content related to backend engineering, SQL performance,
+      and practical work in mature systems.
+    </p>
+  </Section>
+
+  <Section title="Welcome video">
+    <p>{videoPlaceholders[0].summary}</p>
+  </Section>
+
+  <Section title="Longer presentation video">
+    <p>{videoPlaceholders[1].summary}</p>
+  </Section>
+</MainLayout>

@@ -1,0 +1,25 @@
+---
+import Section from "../components/Section.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { helpAreas } from "../data/site";
+---
+
+<MainLayout
+  title="What I Help With"
+  description="Placeholder service overview covering .NET backend work, SQL Server performance, legacy systems, troubleshooting, and integrations."
+>
+  <section class="hero">
+    <p class="eyebrow">What I Help With</p>
+    <h1>What I Help With</h1>
+    <p>
+      Placeholder service page for the main areas of work this site will focus on. Each
+      section is intentionally short and ready for later expansion.
+    </p>
+  </section>
+
+  {helpAreas.map((area) => (
+    <Section title={area.title}>
+      <p>{area.description}</p>
+    </Section>
+  ))}
+</MainLayout>

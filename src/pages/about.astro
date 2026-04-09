@@ -1,0 +1,62 @@
+---
+import Section from "../components/Section.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { aboutContent, siteConfig } from "../data/site";
+---
+
+<MainLayout
+  title="About"
+  description="About Kaloyan Asenov, a senior .NET backend engineer focused on mature systems, SQL Server, and practical engineering work."
+>
+  <section class="hero">
+    <p class="eyebrow">About</p>
+    <h1>About</h1>
+    <p>
+      Placeholder overview of experience, technical focus, and working style. This page is
+      structured for future expansion without changing the layout or routing.
+    </p>
+  </section>
+
+  <Section title="Intro">
+    <p>{siteConfig.summary}</p>
+  </Section>
+
+  <Section title="What I specialize in">
+    <ul class="simple-list">
+      {aboutContent.specializations.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section title="How I work">
+    <ul class="simple-list">
+      {aboutContent.workStyle.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section title="Career highlights">
+    <ul class="simple-list">
+      {aboutContent.highlights.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section title="What I'm looking for now">
+    <p>{siteConfig.availability}</p>
+    <p>
+      Placeholder note for the kinds of teams, systems, and responsibilities that are the
+      best fit right now.
+    </p>
+  </Section>
+
+  <Section title="A bit more about me">
+    <p>
+      Placeholder personal context section. This can later include background, interests,
+      and the broader professional story behind the technical work.
+    </p>
+  </Section>
+</MainLayout>

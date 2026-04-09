@@ -1,0 +1,12 @@
+---
+import { siteConfig } from "../data/site";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>{siteConfig.name} - {siteConfig.positioning}</p>
+    <p>Open to fully remote part-time opportunities. Copyright {year}</p>
+  </div>
+</footer>

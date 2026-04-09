@@ -1,0 +1,39 @@
+---
+import SeoHead from "../components/SeoHead.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  ogType?: "website" | "article";
+}
+
+const {
+  title,
+  description,
+  canonicalPath = Astro.url.pathname,
+  ogType = "website"
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <SeoHead
+      title={title}
+      description={description}
+      canonicalPath={canonicalPath}
+      ogType={ogType}
+    />
+  </head>
+  <body>
+    <SiteHeader currentPath={Astro.url.pathname} />
+    <main class="container page-content">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

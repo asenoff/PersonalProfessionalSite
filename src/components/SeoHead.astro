@@ -1,0 +1,39 @@
+---
+import { siteConfig } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  ogType?: "website" | "article";
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = siteConfig.defaultDescription,
+  canonicalPath = "/",
+  ogType = "website",
+  ogImage = "/og-placeholder.svg"
+} = Astro.props;
+
+const fullTitle = title ? `${title} | ${siteConfig.name}` : siteConfig.defaultTitle;
+const canonicalUrl = new URL(canonicalPath, siteConfig.siteUrl).toString();
+const ogImageUrl = new URL(ogImage, siteConfig.siteUrl).toString();
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+<meta property="og:site_name" content={siteConfig.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImageUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />

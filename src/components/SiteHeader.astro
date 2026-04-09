@@ -1,0 +1,42 @@
+---
+import { navItems, siteConfig } from "../data/site";
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const isActive = (href: string) => {
+  if (href === "/") {
+    return currentPath === "/";
+  }
+
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+};
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="site-brand" href="/">
+      <span>{siteConfig.name}</span>
+      <small>{siteConfig.jobTitle}</small>
+    </a>
+
+    <nav aria-label="Primary">
+      <ul class="nav-list">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? "page" : undefined}
+              class={isActive(item.href) ? "active" : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>

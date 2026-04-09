@@ -1,0 +1,45 @@
+---
+import Section from "../components/Section.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { contactMethods, siteConfig } from "../data/site";
+---
+
+<MainLayout
+  title="Contact"
+  description="Placeholder contact page for remote part-time .NET backend opportunities."
+>
+  <section class="hero">
+    <p class="eyebrow">Contact</p>
+    <h1>Contact</h1>
+    <p>
+      Placeholder contact page for fully remote part-time opportunities and focused backend
+      engineering conversations.
+    </p>
+  </section>
+
+  <Section title="Intro">
+    <p>
+      This page is set up for direct outreach, project-fit details, and a short availability
+      summary.
+    </p>
+  </Section>
+
+  <Section title="Availability section">
+    <p>{siteConfig.availability}</p>
+  </Section>
+
+  <Section title="Contact methods placeholder">
+    <ul class="simple-list">
+      {contactMethods.map((method) => (
+        <li>{method}</li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section title="CTA for remote part-time opportunities">
+    <p>
+      Placeholder call to action for companies that need senior backend help on a focused,
+      remote, part-time basis.
+    </p>
+  </Section>
+</MainLayout>

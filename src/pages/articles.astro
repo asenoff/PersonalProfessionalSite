@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import ContentCard from "../components/ContentCard.astro";
+import Section from "../components/Section.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+
+const articleItems = (await getCollection("articles")).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<MainLayout
+  title="Articles"
+  description="Placeholder article archive for writing about .NET backend engineering, SQL performance, and legacy systems."
+>
+  <section class="hero">
+    <p class="eyebrow">Articles</p>
+    <h1>Articles</h1>
+    <p>
+      Placeholder writing archive for backend engineering topics. The list is powered by
+      Astro content collections and already supports detail pages.
+    </p>
+  </section>
+
+  <Section title="Intro">
+    <p>
+      Initial article structure for practical writing about mature .NET systems, SQL
+      performance, and production-critical software.
+    </p>
+  </Section>
+
+  <Section title="List of 2 placeholder articles">
+    <div class="card-grid">
+      {articleItems.map((item) => (
+        <ContentCard
+          title={item.data.title}
+          summary={item.data.summary}
+          href={`/articles/${item.slug}`}
+          tags={item.data.tags}
+        />
+      ))}
+    </div>
+  </Section>
+</MainLayout>

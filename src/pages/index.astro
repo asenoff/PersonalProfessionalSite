@@ -1,0 +1,88 @@
+---
+import { getCollection } from "astro:content";
+import ContentCard from "../components/ContentCard.astro";
+import Section from "../components/Section.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { homeContent, siteConfig } from "../data/site";
+
+const workItems = (await getCollection("work"))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 2);
+
+const articleItems = (await getCollection("articles"))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 2);
+---
+
+<MainLayout
+  title="Home"
+  description="Placeholder homepage for Kaloyan Asenov, a senior .NET backend engineer focused on production-critical systems."
+>
+  <section class="hero">
+    <p class="eyebrow">Home</p>
+    <h1>{homeContent.hero.title}</h1>
+    <p>{homeContent.hero.intro}</p>
+    <p>{siteConfig.summary}</p>
+    <p>{homeContent.hero.supporting}</p>
+  </section>
+
+  <Section title="Core strengths">
+    <ul class="simple-list">
+      {homeContent.coreStrengths.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section title="Best fit">
+    <ul class="simple-list">
+      {homeContent.bestFit.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section title="Selected work preview">
+    <div class="card-grid">
+      {workItems.map((item) => (
+        <ContentCard
+          title={item.data.title}
+          summary={item.data.summary}
+          href={`/work/${item.slug}`}
+          tags={item.data.tags}
+        />
+      ))}
+    </div>
+    <p><a href="/work">View all work</a></p>
+  </Section>
+
+  <Section title="Writing preview">
+    <div class="card-grid">
+      {articleItems.map((item) => (
+        <ContentCard
+          title={item.data.title}
+          summary={item.data.summary}
+          href={`/articles/${item.slug}`}
+          tags={item.data.tags}
+        />
+      ))}
+    </div>
+    <p><a href="/articles">View all articles</a></p>
+  </Section>
+
+  <Section title="Video introduction preview">
+    <p>
+      Placeholder section for a short introduction video and a longer presentation video.
+      The dedicated videos page will hold embeds or links later.
+    </p>
+    <p><a href="/videos">Go to videos</a></p>
+  </Section>
+
+  <Section title="CTA">
+    <p>
+      Placeholder call to action for teams that need senior backend help on data-intensive
+      or production-critical systems.
+    </p>
+    <p><a href="/contact">Start a conversation</a></p>
+  </Section>
+</MainLayout>
