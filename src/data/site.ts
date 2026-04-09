@@ -747,7 +747,7 @@ export const videoPlaceholders = [
 ];
 
 export const contactAvailability = {
-  window: "08:00 - 20:00 CET",
+  window: "06:30 - 17:00 GMT on weekdays",
   capacity: "Up to 4 focused hours per day",
   model: "Fully remote, part-time collaboration",
   note:
