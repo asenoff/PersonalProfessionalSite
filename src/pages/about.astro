@@ -1,62 +1,166 @@
 ---
+import Icon from "../components/Icon.astro";
 import Section from "../components/Section.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-import { aboutContent, siteConfig } from "../data/site";
+import { aboutPageContent, aboutTimelineGroups } from "../data/site";
 ---
 
 <MainLayout
   title="About"
-  description="About Kaloyan Asenov, a senior .NET backend engineer focused on mature systems, SQL Server, and practical engineering work."
+  description="About Kaloyan Asenov, a senior .NET backend engineer focused on mature systems, SQL Server performance, and practical engineering work."
 >
-  <section class="hero">
+  <section class="hero about-hero">
     <p class="eyebrow">About</p>
-    <h1>About</h1>
-    <p>
-      Placeholder overview of experience, technical focus, and working style. This page is
-      structured for future expansion without changing the layout or routing.
-    </p>
+    <h1>About Kaloyan Asenov</h1>
+    <p class="lead">{aboutPageContent.heroLead}</p>
+    <p>{aboutPageContent.heroBody}</p>
+
+    <div class="about-stat-grid">
+      {aboutPageContent.stats.map((stat) => (
+        <article class="about-stat-card">
+          <div class="about-stat-head">
+            <span class="icon-badge">
+              <Icon name={stat.icon} />
+            </span>
+            <div class="about-stat-copy">
+              <p class="about-stat-value">{stat.value}</p>
+              <p class="about-stat-label">{stat.label}</p>
+            </div>
+          </div>
+          <p class="about-stat-description">{stat.description}</p>
+        </article>
+      ))}
+    </div>
   </section>
 
-  <Section title="Intro">
-    <p>{siteConfig.summary}</p>
+  <Section
+    title="Core profile"
+    intro="The strongest pattern across my work is backend engineering for systems where correctness, stability, and data quality matter."
+  >
+    <div class="about-focus-grid">
+      {aboutPageContent.focusAreas.map((area) => (
+        <article class="about-focus-card">
+          <div class="about-focus-head">
+            <span class="icon-badge icon-badge--contact">
+              <Icon name={area.icon} />
+            </span>
+            <h3>{area.title}</h3>
+          </div>
+          <p>{area.description}</p>
+        </article>
+      ))}
+    </div>
   </Section>
 
-  <Section title="What I specialize in">
-    <ul class="simple-list">
-      {aboutContent.specializations.map((item) => (
-        <li>{item}</li>
+  <Section
+    title="Detailed overview"
+    intro="The sections below expand on scope, working style, ownership, and the mindset behind the technical work."
+  >
+    <div class="about-accordion-stack">
+      {aboutPageContent.accordionSections.map((item, index) => (
+        <details class="about-accordion" open={index === 0}>
+          <summary class="about-accordion-summary">
+            <span class="icon-badge icon-badge--subtle">
+              <Icon name={item.icon} />
+            </span>
+            <span class="about-accordion-heading">
+              <span class="about-accordion-title">{item.title}</span>
+              <span class="about-accordion-kicker">{item.summary}</span>
+            </span>
+          </summary>
+
+          <div class="about-accordion-body">
+            {item.paragraphs.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+
+            {item.listBlocks && (
+              <div class="about-list-groups">
+                {item.listBlocks.map((group) => (
+                  <section class="about-list-group">
+                    <h3 class="about-list-title">{group.title}</h3>
+                    <ul class="about-mini-list">
+                      {group.items.map((entry) => (
+                        <li>{entry}</li>
+                      ))}
+                    </ul>
+                  </section>
+                ))}
+              </div>
+            )}
+
+            {item.closing && <p class="about-accordion-note">{item.closing}</p>}
+          </div>
+        </details>
+      ))}
+    </div>
+  </Section>
+
+  <Section
+    id="career-timeline"
+    title="Career timeline"
+    intro="A compact view of roles, education, and certifications. Hover or focus the chips to reveal extra context."
+  >
+    <div class="about-timeline-groups">
+      {aboutTimelineGroups.map((group) => (
+        <section class="timeline-group">
+          <div class="timeline-group-header">
+            <span class="icon-badge">
+              <Icon name={group.icon} />
+            </span>
+            <div>
+              <h3>{group.title}</h3>
+              <p>{group.intro}</p>
+            </div>
+          </div>
+
+          <ol class="timeline-list">
+            {group.entries.map((entry) => (
+              <li class="timeline-item">
+                <div class="timeline-rail" aria-hidden="true">
+                  <span class="timeline-dot"></span>
+                </div>
+
+                <article class="timeline-card">
+                  <p class="timeline-period">{entry.period}</p>
+                  <h3 class="timeline-role">{entry.title}</h3>
+                  <p class="timeline-organization">{entry.organization}</p>
+                  {entry.location && <p class="timeline-location">{entry.location}</p>}
+                  <p class="timeline-summary">{entry.summary}</p>
+
+                  <div class="timeline-chip-row">
+                    {entry.chips.map((chip) => (
+                      <button
+                        class="tooltip-chip"
+                        type="button"
+                        aria-label={`${chip.label}: ${chip.detail}`}
+                      >
+                        {chip.label}
+                        <span class="tooltip-panel">{chip.detail}</span>
+                      </button>
+                    ))}
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+    </div>
+  </Section>
+
+  <Section title="What I'm focused on now" className="section-callout about-focus-callout">
+    <p>{aboutPageContent.currentFocus.intro}</p>
+    <ul class="about-current-focus-list">
+      {aboutPageContent.currentFocus.items.map((item) => (
+        <li>
+          <span class="icon-badge icon-badge--subtle">
+            <Icon name="database" />
+          </span>
+          <span>{item}</span>
+        </li>
       ))}
     </ul>
-  </Section>
-
-  <Section title="How I work">
-    <ul class="simple-list">
-      {aboutContent.workStyle.map((item) => (
-        <li>{item}</li>
-      ))}
-    </ul>
-  </Section>
-
-  <Section title="Career highlights">
-    <ul class="simple-list">
-      {aboutContent.highlights.map((item) => (
-        <li>{item}</li>
-      ))}
-    </ul>
-  </Section>
-
-  <Section title="What I'm looking for now" className="section-callout">
-    <p>{siteConfig.availability}</p>
-    <p>
-      Placeholder note for the kinds of teams, systems, and responsibilities that are the
-      best fit right now.
-    </p>
-  </Section>
-
-  <Section title="A bit more about me">
-    <p>
-      Placeholder personal context section. This can later include background, interests,
-      and the broader professional story behind the technical work.
-    </p>
+    <p>{aboutPageContent.currentFocus.note}</p>
   </Section>
 </MainLayout>
