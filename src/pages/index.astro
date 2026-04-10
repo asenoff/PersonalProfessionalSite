@@ -1,8 +1,13 @@
 ---
 import { getCollection } from "astro:content";
 import ContentCard from "../components/ContentCard.astro";
+import LazyVideoPlayer from "../components/LazyVideoPlayer.astro";
 import Section from "../components/Section.astro";
 import MainLayout from "../layouts/MainLayout.astro";
+import welcomeVideoHigh from "../content/videos/welcome-video-high.mp4?url";
+import welcomeVideoLow from "../content/videos/welcome-video-low.mp4?url";
+import welcomeVideoMedium from "../content/videos/welcome-video-medium.mp4?url";
+import welcomeVideoPoster from "../content/videos/welcome-video-poster.jpg?url";
 import { homeContent, siteConfig } from "../data/site";
 
 const workItems = (await getCollection("work"))
@@ -74,14 +79,24 @@ const articleItems = (await getCollection("articles"))
     </p>
   </Section>
 
-  <Section title="Video introduction preview">
-    <p>
-      Placeholder section for a short introduction video and a longer presentation video.
-      The dedicated videos page will hold embeds or links later.
-    </p>
-    <p class="button-row">
-      <a class="button-link button-link--secondary" href="/videos">Go to videos</a>
-    </p>
+  <Section title="Videos">
+    <p>A welcome video is available directly on the homepage with on-demand loading.</p>
+    <LazyVideoPlayer
+      title="Welcome video"
+      summary="A lightweight homepage player that loads the selected source only after playback starts."
+      poster={welcomeVideoPoster}
+      defaultQuality="medium"
+      sources={[
+        { label: "Low (540p)", value: "low", src: welcomeVideoLow, type: "video/mp4" },
+        {
+          label: "Medium (720p)",
+          value: "medium",
+          src: welcomeVideoMedium,
+          type: "video/mp4"
+        },
+        { label: "High (1080p)", value: "high", src: welcomeVideoHigh, type: "video/mp4" }
+      ]}
+    />
   </Section>
 
   <Section title="CTA" className="section-callout">
