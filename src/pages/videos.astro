@@ -1,6 +1,5 @@
 ---
 import LazyVideoPlayer from "../components/LazyVideoPlayer.astro";
-import Section from "../components/Section.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 import longerPresentationHigh from "../content/videos/longer-presentation-high.mp4?url";
 import longerPresentationLow from "../content/videos/longer-presentation-low.mp4?url";
@@ -13,9 +12,11 @@ import shortIntroductionPoster from "../content/videos/short-introduction-poster
 
 const videos = [
   {
-    title: "Short introduction",
+    label: "Video 01",
+    title: "Placeholder introduction video",
     summary:
-      "A short local placeholder clip wired through the lazy player for the introduction slot.",
+      "Short-format placeholder title for a future introduction recording.",
+    chips: ["Short format", "Local playback", "Three qualities"],
     poster: shortIntroductionPoster,
     defaultQuality: "medium",
     sources: [
@@ -35,9 +36,11 @@ const videos = [
     ]
   },
   {
-    title: "Longer presentation",
+    label: "Video 02",
+    title: "Placeholder longer presentation",
     summary:
-      "A second local placeholder clip with the same lazy loading and quality switching behavior.",
+      "Longer-format placeholder title for a future walkthrough or presentation.",
+    chips: ["Longer format", "Poster first", "Quality switch"],
     poster: longerPresentationPoster,
     defaultQuality: "medium",
     sources: [
@@ -61,29 +64,42 @@ const videos = [
 
 <MainLayout
   title="Videos"
-  description="Local video page with on-demand playback and quality selection for a short introduction and a longer presentation."
+  description="A small video blog for sharing thoughts through short recordings and longer presentations, with on-demand playback and quality selection."
 >
-  <section class="hero">
+  <section class="hero videos-page-hero">
     <p class="eyebrow">Videos</p>
-    <h1>Videos</h1>
-    <p>Two local video slots are wired with click-to-load playback and quality selection.</p>
+    <h1>Video library</h1>
+    <p>
+      A small video blog for sharing thoughts on backend engineering, data-heavy systems,
+      and the practical trade-offs behind real software work.
+    </p>
   </section>
 
-  <Section title="Video library">
-    <p>
-      The player keeps the page light by rendering a poster first and loading the selected
-      video source only after play is requested.
-    </p>
-    <div class="video-stack">
+  <section id="video-library" class="section videos-library-section videos-library-section--plain">
+    <div class="videos-showcase">
       {videos.map((video) => (
-        <LazyVideoPlayer
-          title={video.title}
-          summary={video.summary}
-          poster={video.poster}
-          sources={video.sources}
-          defaultQuality={video.defaultQuality}
-        />
+        <div class="videos-entry">
+          <div class="videos-entry-head">
+            <div class="videos-entry-heading">
+              <p class="videos-entry-label">{video.label}</p>
+            </div>
+
+            <ul class="videos-entry-chip-list" aria-label={`Highlights for ${video.title}`}>
+              {video.chips.map((chip) => (
+                <li>{chip}</li>
+              ))}
+            </ul>
+          </div>
+
+          <LazyVideoPlayer
+            title={video.title}
+            summary={video.summary}
+            poster={video.poster}
+            sources={video.sources}
+            defaultQuality={video.defaultQuality}
+          />
+        </div>
       ))}
     </div>
-  </Section>
+  </section>
 </MainLayout>
