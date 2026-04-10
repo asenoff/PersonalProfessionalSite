@@ -1,25 +1,97 @@
 ---
+import Icon from "../components/Icon.astro";
 import Section from "../components/Section.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-import { helpAreas } from "../data/site";
+import { helpPageContent } from "../data/site";
 ---
 
 <MainLayout
   title="What I Help With"
-  description="Placeholder service overview covering .NET backend work, SQL Server performance, legacy systems, troubleshooting, and integrations."
+  description="Practical support across .NET backend development, SQL Server performance, legacy systems, production troubleshooting, and internal integrations."
 >
-  <section class="hero">
-    <p class="eyebrow">What I Help With</p>
-    <h1>What I Help With</h1>
-    <p>
-      Placeholder service page for the main areas of work this site will focus on. Each
-      section is intentionally short and ready for later expansion.
-    </p>
+  <section class="hero help-hero">
+    <div class="help-hero-copy">
+      <p class="eyebrow">What I Help With</p>
+      <h1>Backend and data-heavy systems that need reliable, careful improvement.</h1>
+      <p>{helpPageContent.heroLead}</p>
+      <p>{helpPageContent.heroBody}</p>
+      <p>{helpPageContent.heroSupport}</p>
+    </div>
+
+    <aside class="help-hero-panel" aria-label="Best fit overview">
+      <p class="help-panel-eyebrow">Usually a strong fit</p>
+      <ul class="help-quick-list">
+        {helpPageContent.quickChecks.map((item) => (
+          <li class="help-quick-item">
+            <span class="icon-badge icon-badge--subtle" aria-hidden="true">
+              <Icon name={item.icon} />
+            </span>
+            <div class="help-quick-copy">
+              <p class="help-quick-title">{item.title}</p>
+              <p class="help-quick-text">{item.description}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </aside>
   </section>
 
-  {helpAreas.map((area) => (
-    <Section title={area.title}>
-      <p>{area.description}</p>
-    </Section>
-  ))}
+  <Section
+    title="Areas of support"
+    intro="The common thread is practical backend and data work in systems that already matter to the business."
+  >
+    <div class="help-area-grid">
+      {helpPageContent.areas.map((area) => (
+        <article class="help-area-card">
+          <div class="help-area-head">
+            <span class="icon-badge" aria-hidden="true">
+              <Icon name={area.icon} />
+            </span>
+            <div class="help-area-copy">
+              <h3>{area.title}</h3>
+            </div>
+          </div>
+
+          <div class="help-area-stack">
+            {area.paragraphs.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+
+            {area.items && (
+              <>
+                {area.listLabel && <p class="help-inline-label">{area.listLabel}</p>}
+                <ul class="help-bullet-list">
+                  {area.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {area.closing && <p class="help-area-note">{area.closing}</p>}
+          </div>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section title="How I typically contribute">
+    <ul class="help-contribution-list">
+      {helpPageContent.contributions.map((item) => (
+        <li>
+          <span class="icon-badge icon-badge--subtle" aria-hidden="true">
+            <Icon name={item.icon} />
+          </span>
+          <span>{item.text}</span>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section title="Direction" className="section-callout">
+    <p>{helpPageContent.direction}</p>
+    <p class="button-row">
+      <a class="button-link" href="/contact">Discuss a system or problem</a>
+    </p>
+  </Section>
 </MainLayout>

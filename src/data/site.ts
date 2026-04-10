@@ -88,6 +88,26 @@ export type AboutTimelineGroup = {
   entries: AboutTimelineEntry[];
 };
 
+export type HelpQuickCheck = {
+  title: string;
+  description: string;
+  icon: SiteIconName;
+};
+
+export type HelpArea = {
+  title: string;
+  icon: SiteIconName;
+  paragraphs: string[];
+  listLabel?: string;
+  items?: string[];
+  closing?: string;
+};
+
+export type HelpContribution = {
+  text: string;
+  icon: SiteIconName;
+};
+
 export const siteConfig = {
   name: "Kaloyan Asenov",
   jobTitle: "Senior .NET Backend Engineer",
@@ -705,33 +725,128 @@ export const aboutTimelineGroups: AboutTimelineGroup[] = [
   }
 ];
 
-export const helpAreas = [
-  {
-    title: ".NET backend development",
-    description:
-      "Placeholder scope for backend services, APIs, business logic, and maintainable changes in existing .NET applications."
-  },
-  {
-    title: "SQL Server and data performance",
-    description:
-      "Placeholder scope for slow queries, reporting bottlenecks, indexing issues, and practical database-focused debugging."
-  },
-  {
-    title: "Legacy systems",
-    description:
-      "Placeholder scope for improving mature systems that cannot be rebuilt and still need steady progress."
-  },
-  {
-    title: "Production support and troubleshooting",
-    description:
-      "Placeholder scope for issue investigation, root-cause analysis, and targeted fixes in live environments."
-  },
-  {
-    title: "Integrations and internal systems",
-    description:
-      "Placeholder scope for connecting internal tools, data flows, and business processes that need reliable backend support."
-  }
-];
+export const helpPageContent = {
+  heroLead:
+    "I focus on backend and data-heavy systems, especially where reliability, clarity, and steady progress matter more than novelty.",
+  heroBody:
+    "Most of my work sits around .NET and SQL Server, often in environments where systems are already in use, data is important, and changes need to be made carefully.",
+  heroSupport:
+    "I can contribute across the stack when needed, but my strength is in backend logic, data handling, and making systems behave predictably under real-world conditions.",
+  quickChecks: [
+    {
+      title: "Mature .NET systems",
+      description:
+        "Existing applications that need careful change rather than broad reinvention.",
+      icon: "layers"
+    },
+    {
+      title: "SQL-heavy workflows",
+      description:
+        "Reporting, stored procedures, data movement, and performance issues where correctness matters.",
+      icon: "database"
+    },
+    {
+      title: "Production and internal platforms",
+      description:
+        "Systems already carrying real work, where reliability matters more than novelty.",
+      icon: "shield"
+    }
+  ] satisfies HelpQuickCheck[],
+  areas: [
+    {
+      title: ".NET backend development",
+      icon: "layers",
+      paragraphs: [
+        "I work on backend systems in .NET, including APIs, business logic, and improvements in existing applications.",
+        "Most of my experience is in mature systems, where changes need to be made carefully and with a clear understanding of existing behavior."
+      ],
+      closing:
+        "I focus on making code easier to reason about, safer to extend, and aligned with how the system is actually used."
+    },
+    {
+      title: "SQL Server and data performance",
+      icon: "database",
+      paragraphs: [
+        "A significant part of my work is around SQL Server and data-heavy workflows."
+      ],
+      listLabel: "I help with",
+      items: [
+        "Slow queries and reporting bottlenecks",
+        "Complex stored procedures and data transformations",
+        "Indexing and execution plan analysis",
+        "Understanding and stabilizing unclear data flows"
+      ],
+      closing:
+        "My approach is practical: understand how the data is used, identify where the real cost is, and improve performance without breaking correctness. Over time, I’m increasingly focusing on this area as a specialization."
+    },
+    {
+      title: "Legacy systems",
+      icon: "wrench",
+      paragraphs: [
+        "I’m comfortable working in systems that are already complex, imperfect, and in active use."
+      ],
+      listLabel: "Instead of pushing for full rewrites, I focus on",
+      items: [
+        "Understanding the current behavior",
+        "Making safe, incremental improvements",
+        "Reducing friction without introducing new risk"
+      ],
+      closing:
+        "This is often where careful backend and data work has the most impact."
+    },
+    {
+      title: "Production support and troubleshooting",
+      icon: "shield",
+      paragraphs: [
+        "I can step into live systems and help diagnose issues that are not immediately obvious."
+      ],
+      listLabel: "This includes",
+      items: [
+        "Tracing data inconsistencies",
+        "Investigating performance degradation",
+        "Identifying root causes across application and database layers"
+      ],
+      closing:
+        "The goal is not just to fix the issue, but to understand why it happened and prevent it from recurring."
+    },
+    {
+      title: "Integrations and internal systems",
+      icon: "briefcase",
+      paragraphs: [
+        "I work on connecting systems and supporting internal workflows where reliability matters more than visibility."
+      ],
+      listLabel: "This includes",
+      items: [
+        "API integrations",
+        "Data synchronization between systems",
+        "Internal tools and automation",
+        "Backend support for business processes"
+      ],
+      closing:
+        "These systems are often not visible externally, but they are critical to daily operations."
+    }
+  ] satisfies HelpArea[],
+  contributions: [
+    {
+      text: "Steady backend contribution in existing systems",
+      icon: "layers"
+    },
+    {
+      text: "Support for data-heavy features and reporting",
+      icon: "database"
+    },
+    {
+      text: "Investigation and resolution of production issues",
+      icon: "shield"
+    },
+    {
+      text: "Pragmatic improvements aligned with business constraints",
+      icon: "wrench"
+    }
+  ] satisfies HelpContribution[],
+  direction:
+    "While I work broadly across backend systems, I’m gradually moving toward deeper specialization in SQL Server performance and data-intensive problem solving."
+} as const;
 
 export const contactAvailability = {
   window: "06:30 - 17:00 GMT on weekdays",
