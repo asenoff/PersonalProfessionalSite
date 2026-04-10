@@ -108,6 +108,20 @@ export type HelpContribution = {
   icon: SiteIconName;
 };
 
+export type HomeFact = {
+  value: string;
+  label: string;
+  icon: SiteIconName;
+};
+
+export type HomeSectionLink = {
+  label: string;
+  href: string;
+  anchor: string;
+  summary: string;
+  icon: SiteIconName;
+};
+
 export const siteConfig = {
   name: "Kaloyan Asenov",
   jobTitle: "Senior .NET Backend Engineer",
@@ -135,21 +149,92 @@ export const navItems: NavItem[] = [
 
 export const homeContent = {
   hero: {
-    title: siteConfig.positioning,
+    title: "Senior .NET backend help for data-intensive systems that need careful improvement.",
     intro:
-      "Placeholder introduction for a focused personal site about backend engineering, SQL-heavy systems, and practical improvement work.",
-    supporting: siteConfig.availability
+      "I’m Kaloyan Asenov, a senior .NET backend engineer with over 10 years of experience across enterprise, public-sector, banking, ERP, logistics, and internal business systems.",
+    supporting:
+      "Most of my work sits around .NET, SQL Server, reporting, legacy modernization, and production-critical troubleshooting, usually where correctness and reliability matter more than novelty."
   },
-  coreStrengths: [
-    "Backend development in mature .NET codebases",
-    "SQL Server query and reporting performance analysis",
-    "Stabilizing systems that are already in production"
-  ],
-  bestFit: [
-    "Teams with business-critical internal systems",
-    "Products with data-heavy workflows or reporting bottlenecks",
-    "Remote-first part-time engagements that need senior execution"
-  ]
+  facts: [
+    {
+      value: "10+ years",
+      label: "Production software experience",
+      icon: "clock"
+    },
+    {
+      value: ".NET + SQL Server",
+      label: "Core technical depth",
+      icon: "database"
+    },
+    {
+      value: "20+ projects",
+      label: "Delivered in real-world settings",
+      icon: "briefcase"
+    },
+    {
+      value: "Remote part-time",
+      label: "Around 4 focused hours per day",
+      icon: "shield"
+    }
+  ] satisfies HomeFact[],
+  sectionLinks: [
+    {
+      label: "About",
+      href: "/about",
+      anchor: "#about-overview",
+      summary: "Experience, working style, and a career timeline across mature systems.",
+      icon: "award"
+    },
+    {
+      label: "What I Help With",
+      href: "/what-i-help-with",
+      anchor: "#help-overview",
+      summary: "Backend, SQL Server, legacy improvement, troubleshooting, and integration support.",
+      icon: "layers"
+    },
+    {
+      label: "Work",
+      href: "/work",
+      anchor: "#work-overview",
+      summary: "Case studies from public-sector reporting, banking, and ERP integration work.",
+      icon: "briefcase"
+    },
+    {
+      label: "Articles",
+      href: "/articles",
+      anchor: "#articles-overview",
+      summary: "Short writing on teamwork, legacy systems, and practical engineering decisions.",
+      icon: "graduation"
+    },
+    {
+      label: "Videos",
+      href: "/videos",
+      anchor: "#videos-overview",
+      summary: "A small video blog with short and longer recorded thoughts.",
+      icon: "clock"
+    },
+    {
+      label: "Contact",
+      href: "/contact",
+      anchor: "#contact-overview",
+      summary: "Availability, direct contact options, and the protected contact form.",
+      icon: "mail"
+    }
+  ] satisfies HomeSectionLink[],
+  sectionSummaries: {
+    about:
+      "A concise background on experience, working style, ownership, and the career path behind the technical work.",
+    help:
+      "A quick view of the kinds of backend and data-heavy problems I am most useful on.",
+    work:
+      "Selected case studies showing the kind of systems and constraints I usually work within.",
+    articles:
+      "Short writing on the human and technical realities of mature software systems.",
+    videos:
+      "A welcome recording is available below, with more short and longer videos on the dedicated page.",
+    contact:
+      "Current availability and the most practical ways to start a serious conversation."
+  }
 };
 
 export const aboutPageContent = {

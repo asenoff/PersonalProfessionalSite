@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import ContentCard from "../components/ContentCard.astro";
+import Icon from "../components/Icon.astro";
 import LazyVideoPlayer from "../components/LazyVideoPlayer.astro";
 import Section from "../components/Section.astro";
 import MainLayout from "../layouts/MainLayout.astro";
@@ -8,7 +9,12 @@ import welcomeVideoHigh from "../content/videos/welcome-video-high.mp4?url";
 import welcomeVideoLow from "../content/videos/welcome-video-low.mp4?url";
 import welcomeVideoMedium from "../content/videos/welcome-video-medium.mp4?url";
 import welcomeVideoPoster from "../content/videos/welcome-video-poster.jpg?url";
-import { homeContent, siteConfig } from "../data/site";
+import {
+  aboutPageContent,
+  contactAvailability,
+  helpPageContent,
+  homeContent
+} from "../data/site";
 
 const workItems = (await getCollection("work"))
   .sort((a, b) => a.data.order - b.data.order)
@@ -17,37 +23,108 @@ const workItems = (await getCollection("work"))
 const articleItems = (await getCollection("articles"))
   .sort((a, b) => a.data.order - b.data.order)
   .slice(0, 2);
+
+const aboutHighlights = aboutPageContent.stats.slice(0, 3);
 ---
 
 <MainLayout
   title="Home"
-  description="Placeholder homepage for Kaloyan Asenov, a senior .NET backend engineer focused on production-critical systems."
+  description="Fact-first homepage for Kaloyan Asenov, with concise previews of background, support areas, case studies, articles, videos, and contact details."
 >
-  <section class="hero">
-    <p class="eyebrow">Home</p>
-    <h1>{homeContent.hero.title}</h1>
-    <p>{homeContent.hero.intro}</p>
-    <p>{siteConfig.summary}</p>
-    <p>{homeContent.hero.supporting}</p>
+  <section class="hero home-hero">
+    <div class="home-hero-copy">
+      <p class="eyebrow">Home</p>
+      <h1>{homeContent.hero.title}</h1>
+      <p class="lead">{homeContent.hero.intro}</p>
+      <p>{homeContent.hero.supporting}</p>
+
+      <p class="button-row">
+        <a class="button-link" href="#site-map">Start here</a>
+        <a class="button-link button-link--ghost" href="/contact">Discuss a role or system</a>
+      </p>
+    </div>
+
+    <aside class="home-hero-panel" aria-label="At a glance">
+      <p class="home-panel-eyebrow">At a glance</p>
+      <div class="home-fact-grid">
+        {homeContent.facts.map((fact) => (
+          <article class="home-fact-card">
+            <div class="home-fact-head">
+              <span class="icon-badge icon-badge--subtle" aria-hidden="true">
+                <Icon name={fact.icon} />
+              </span>
+              <div class="home-fact-copy">
+                <p class="home-fact-value">{fact.value}</p>
+                <p class="home-fact-label">{fact.label}</p>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </aside>
   </section>
 
-  <Section title="Core strengths">
-    <ul class="simple-list">
-      {homeContent.coreStrengths.map((item) => (
-        <li>{item}</li>
+  <Section
+    id="about-overview"
+    title="About"
+    intro={homeContent.sectionSummaries.about}
+    className="home-preview-section"
+  >
+    <div class="home-preview-grid">
+      {aboutHighlights.map((item) => (
+        <article class="home-preview-card">
+          <div class="home-preview-head">
+            <span class="icon-badge" aria-hidden="true">
+              <Icon name={item.icon} />
+            </span>
+            <div class="home-preview-copy">
+              <p class="home-preview-value">{item.value}</p>
+              <h3>{item.label}</h3>
+            </div>
+          </div>
+          <p>{item.description}</p>
+        </article>
       ))}
-    </ul>
+    </div>
+    <p class="button-row">
+      <a class="button-link button-link--ghost" href="/about">Read the full background</a>
+    </p>
   </Section>
 
-  <Section title="Best fit">
-    <ul class="simple-list">
-      {homeContent.bestFit.map((item) => (
-        <li>{item}</li>
+  <Section
+    id="help-overview"
+    title="What I Help With"
+    intro={homeContent.sectionSummaries.help}
+    className="home-preview-section"
+  >
+    <div class="home-preview-grid">
+      {helpPageContent.quickChecks.map((item) => (
+        <article class="home-preview-card">
+          <div class="home-preview-head">
+            <span class="icon-badge icon-badge--subtle" aria-hidden="true">
+              <Icon name={item.icon} />
+            </span>
+            <div class="home-preview-copy">
+              <h3>{item.title}</h3>
+            </div>
+          </div>
+          <p>{item.description}</p>
+        </article>
       ))}
-    </ul>
+    </div>
+    <p class="button-row">
+      <a class="button-link button-link--ghost" href="/what-i-help-with">
+        Explore support areas
+      </a>
+    </p>
   </Section>
 
-  <Section title="Selected work preview">
+  <Section
+    id="work-overview"
+    title="Work"
+    intro={homeContent.sectionSummaries.work}
+    className="home-preview-section"
+  >
     <div class="card-grid">
       {workItems.map((item) => (
         <ContentCard
@@ -59,11 +136,16 @@ const articleItems = (await getCollection("articles"))
       ))}
     </div>
     <p class="button-row">
-      <a class="button-link button-link--ghost" href="/work">View all work</a>
+      <a class="button-link button-link--ghost" href="/work">View all case studies</a>
     </p>
   </Section>
 
-  <Section title="Writing preview">
+  <Section
+    id="articles-overview"
+    title="Articles"
+    intro={homeContent.sectionSummaries.articles}
+    className="home-preview-section"
+  >
     <div class="card-grid">
       {articleItems.map((item) => (
         <ContentCard
@@ -79,33 +161,92 @@ const articleItems = (await getCollection("articles"))
     </p>
   </Section>
 
-  <Section title="Videos">
-    <p>A welcome video is available directly on the homepage with on-demand loading.</p>
-    <LazyVideoPlayer
-      title="Welcome video"
-      summary="A lightweight homepage player that loads the selected source only after playback starts."
-      poster={welcomeVideoPoster}
-      defaultQuality="medium"
-      sources={[
-        { label: "Low (540p)", value: "low", src: welcomeVideoLow, type: "video/mp4" },
-        {
-          label: "Medium (720p)",
-          value: "medium",
-          src: welcomeVideoMedium,
-          type: "video/mp4"
-        },
-        { label: "High (1080p)", value: "high", src: welcomeVideoHigh, type: "video/mp4" }
-      ]}
-    />
+  <Section
+    id="videos-overview"
+    title="Videos"
+    intro={homeContent.sectionSummaries.videos}
+    className="home-preview-section"
+  >
+    <div class="home-video-shell">
+      <LazyVideoPlayer
+        title="Welcome video"
+        summary="A short homepage introduction with deferred loading. Additional recordings and longer video posts live on the dedicated videos page."
+        poster={welcomeVideoPoster}
+        defaultQuality="medium"
+        sources={[
+          { label: "Low (540p)", value: "low", src: welcomeVideoLow, type: "video/mp4" },
+          {
+            label: "Medium (720p)",
+            value: "medium",
+            src: welcomeVideoMedium,
+            type: "video/mp4"
+          },
+          { label: "High (1080p)", value: "high", src: welcomeVideoHigh, type: "video/mp4" }
+        ]}
+      />
+    </div>
+    <p class="button-row">
+      <a class="button-link button-link--ghost" href="/videos">Go to the video page</a>
+    </p>
   </Section>
 
-  <Section title="CTA" className="section-callout">
-    <p>
-      Placeholder call to action for teams that need senior backend help on data-intensive
-      or production-critical systems.
-    </p>
+  <Section
+    id="contact-overview"
+    title="Contact"
+    intro={homeContent.sectionSummaries.contact}
+    className="section-callout home-contact-section"
+  >
+    <div class="home-preview-grid home-contact-grid">
+      <article class="home-preview-card">
+        <div class="home-preview-head">
+          <span class="icon-badge" aria-hidden="true">
+            <Icon name="clock" />
+          </span>
+          <div class="home-preview-copy">
+            <h3>Working window</h3>
+          </div>
+        </div>
+        <p>{contactAvailability.window}</p>
+      </article>
+
+      <article class="home-preview-card">
+        <div class="home-preview-head">
+          <span class="icon-badge" aria-hidden="true">
+            <Icon name="briefcase" />
+          </span>
+          <div class="home-preview-copy">
+            <h3>Capacity</h3>
+          </div>
+        </div>
+        <p>{contactAvailability.capacity}</p>
+      </article>
+
+      <article class="home-preview-card">
+        <div class="home-preview-head">
+          <span class="icon-badge" aria-hidden="true">
+            <Icon name="shield" />
+          </span>
+          <div class="home-preview-copy">
+            <h3>Engagement model</h3>
+          </div>
+        </div>
+        <p>{contactAvailability.model}</p>
+      </article>
+    </div>
     <p class="button-row">
-      <a class="button-link" href="/contact">Start a conversation</a>
+      <a class="button-link" href="/contact">
+        <Icon name="send" />
+        Open contact page
+      </a>
+      <a
+        class="button-link button-link--ghost"
+        href="https://www.linkedin.com/in/asenoff/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Icon name="linkedin" />
+        Connect on LinkedIn
+      </a>
     </p>
   </Section>
 </MainLayout>
