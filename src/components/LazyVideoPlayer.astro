@@ -1,0 +1,195 @@
+---
+type VideoSource = {
+  label: string;
+  value: string;
+  src: string;
+  type?: string;
+};
+
+interface Props {
+  title: string;
+  summary?: string;
+  poster: string;
+  sources: VideoSource[];
+  defaultQuality?: string;
+}
+
+const {
+  title,
+  summary,
+  poster,
+  sources,
+  defaultQuality = "medium"
+} = Astro.props;
+
+const playerConfig = JSON.stringify({
+  title,
+  poster,
+  defaultQuality,
+  sources
+});
+---
+
+<article class="video-player" data-lazy-video-player>
+  <div class="video-frame">
+    <div class="video-frame-media" data-video-stage>
+      <img class="video-poster" src={poster} alt={`Poster frame for ${title}`} loading="lazy" />
+      <button
+        class="video-play-button"
+        type="button"
+        data-video-play
+        aria-label={`Play ${title}`}
+      >
+        <span class="video-play-button-icon" aria-hidden="true"></span>
+        <span>Play video</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="video-player-meta">
+    <div class="video-player-copy">
+      <h3>{title}</h3>
+      {summary && <p>{summary}</p>}
+    </div>
+
+    <label class="video-quality-control">
+      <span>Quality</span>
+      <select data-video-quality aria-label={`Select playback quality for ${title}`}>
+        {sources.map((source) => (
+          <option value={source.value} selected={source.value === defaultQuality}>
+            {source.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  </div>
+
+  <script type="application/json" data-video-config set:html={playerConfig}></script>
+</article>
+
+<script>
+  const initializeLazyVideoPlayers = () => {
+    document.querySelectorAll("[data-lazy-video-player]").forEach((player) => {
+      if (!(player instanceof HTMLElement) || player.dataset.videoReady === "true") {
+        return;
+      }
+
+      player.dataset.videoReady = "true";
+
+      const configElement = player.querySelector("[data-video-config]");
+      const stage = player.querySelector("[data-video-stage]");
+      const playButton = player.querySelector("[data-video-play]");
+      const qualitySelect = player.querySelector("[data-video-quality]");
+
+      if (
+        !(configElement instanceof HTMLScriptElement) ||
+        !(stage instanceof HTMLElement) ||
+        !(playButton instanceof HTMLButtonElement) ||
+        !(qualitySelect instanceof HTMLSelectElement)
+      ) {
+        return;
+      }
+
+      const config = JSON.parse(configElement.textContent || "{}");
+      const sources = Array.isArray(config.sources) ? config.sources : [];
+
+      if (sources.length === 0) {
+        return;
+      }
+
+      let activeQuality = qualitySelect.value || config.defaultQuality || sources[0].value;
+      let videoElement = null;
+
+      const getSourceByQuality = (quality) =>
+        sources.find((source) => source.value === quality) || sources[0];
+
+      const setVideoSource = (quality, autoplay = false) => {
+        if (!(videoElement instanceof HTMLVideoElement)) {
+          return;
+        }
+
+        const source = getSourceByQuality(quality);
+        const previousTime = Number.isFinite(videoElement.currentTime)
+          ? videoElement.currentTime
+          : 0;
+        const shouldResume = autoplay || !videoElement.paused;
+
+        if (videoElement.dataset.activeSrc === source.src) {
+          if (shouldResume) {
+            videoElement.play().catch(() => {});
+          }
+
+          return;
+        }
+
+        videoElement.dataset.activeSrc = source.src;
+
+        const handleLoadedMetadata = () => {
+          if (previousTime > 0 && Number.isFinite(videoElement.duration)) {
+            const safeTime = Math.min(
+              previousTime,
+              Math.max(0, videoElement.duration - 0.25)
+            );
+
+            if (safeTime > 0) {
+              videoElement.currentTime = safeTime;
+            }
+          }
+
+          if (shouldResume) {
+            videoElement.play().catch(() => {});
+          }
+        };
+
+        videoElement.addEventListener("loadedmetadata", handleLoadedMetadata, {
+          once: true
+        });
+
+        while (videoElement.firstChild) {
+          videoElement.removeChild(videoElement.firstChild);
+        }
+
+        const sourceElement = document.createElement("source");
+        sourceElement.src = source.src;
+        sourceElement.type = source.type || "video/mp4";
+        videoElement.appendChild(sourceElement);
+        videoElement.load();
+      };
+
+      const activatePlayer = () => {
+        if (videoElement instanceof HTMLVideoElement) {
+          videoElement.play().catch(() => {});
+          return;
+        }
+
+        videoElement = document.createElement("video");
+        videoElement.className = "video-element";
+        videoElement.controls = true;
+        videoElement.playsInline = true;
+        videoElement.preload = "metadata";
+        videoElement.poster = config.poster;
+
+        stage.replaceChildren(videoElement);
+        setVideoSource(activeQuality, true);
+      };
+
+      playButton.addEventListener("click", activatePlayer);
+
+      qualitySelect.addEventListener("change", () => {
+        activeQuality = qualitySelect.value || config.defaultQuality || sources[0].value;
+
+        if (videoElement instanceof HTMLVideoElement) {
+          setVideoSource(activeQuality, !videoElement.paused);
+        }
+      });
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeLazyVideoPlayers, {
+      once: true
+    });
+  } else {
+    initializeLazyVideoPlayers();
+  }
+</script>

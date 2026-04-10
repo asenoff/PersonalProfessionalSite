@@ -733,19 +733,6 @@ export const helpAreas = [
   }
 ];
 
-export const videoPlaceholders = [
-  {
-    title: "Welcome video",
-    summary:
-      "Placeholder for a short introduction video about experience, focus areas, and the kind of remote work I am looking for."
-  },
-  {
-    title: "Longer presentation video",
-    summary:
-      "Placeholder for a deeper talk or walkthrough related to backend engineering, SQL performance, or legacy system work."
-  }
-];
-
 export const contactAvailability = {
   window: "06:30 - 17:00 GMT on weekdays",
   capacity: "Up to 4 focused hours per day",

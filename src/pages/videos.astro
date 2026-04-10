@@ -1,33 +1,89 @@
 ---
+import LazyVideoPlayer from "../components/LazyVideoPlayer.astro";
 import Section from "../components/Section.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-import { videoPlaceholders } from "../data/site";
+import longerPresentationHigh from "../content/videos/longer-presentation-high.mp4?url";
+import longerPresentationLow from "../content/videos/longer-presentation-low.mp4?url";
+import longerPresentationMedium from "../content/videos/longer-presentation-medium.mp4?url";
+import longerPresentationPoster from "../content/videos/longer-presentation-poster.jpg?url";
+import shortIntroductionHigh from "../content/videos/short-introduction-high.mp4?url";
+import shortIntroductionLow from "../content/videos/short-introduction-low.mp4?url";
+import shortIntroductionMedium from "../content/videos/short-introduction-medium.mp4?url";
+import shortIntroductionPoster from "../content/videos/short-introduction-poster.jpg?url";
+
+const videos = [
+  {
+    title: "Short introduction",
+    summary:
+      "A short local placeholder clip wired through the lazy player for the introduction slot.",
+    poster: shortIntroductionPoster,
+    defaultQuality: "medium",
+    sources: [
+      { label: "Low (540p)", value: "low", src: shortIntroductionLow, type: "video/mp4" },
+      {
+        label: "Medium (720p)",
+        value: "medium",
+        src: shortIntroductionMedium,
+        type: "video/mp4"
+      },
+      {
+        label: "High (1080p)",
+        value: "high",
+        src: shortIntroductionHigh,
+        type: "video/mp4"
+      }
+    ]
+  },
+  {
+    title: "Longer presentation",
+    summary:
+      "A second local placeholder clip with the same lazy loading and quality switching behavior.",
+    poster: longerPresentationPoster,
+    defaultQuality: "medium",
+    sources: [
+      { label: "Low (540p)", value: "low", src: longerPresentationLow, type: "video/mp4" },
+      {
+        label: "Medium (720p)",
+        value: "medium",
+        src: longerPresentationMedium,
+        type: "video/mp4"
+      },
+      {
+        label: "High (1080p)",
+        value: "high",
+        src: longerPresentationHigh,
+        type: "video/mp4"
+      }
+    ]
+  }
+] as const;
 ---
 
 <MainLayout
   title="Videos"
-  description="Placeholder videos page for an introductory video and a longer presentation about backend engineering work."
+  description="Local video page with on-demand playback and quality selection for a short introduction and a longer presentation."
 >
   <section class="hero">
     <p class="eyebrow">Videos</p>
     <h1>Videos</h1>
-    <p>
-      Placeholder video page for future embeds, hosted recordings, or external links.
-    </p>
+    <p>Two local video slots are wired with click-to-load playback and quality selection.</p>
   </section>
 
-  <Section title="Intro">
+  <Section title="Video library">
     <p>
-      Initial structure for video content related to backend engineering, SQL performance,
-      and practical work in mature systems.
+      The player keeps the page light by rendering a poster first and loading the selected
+      video source only after play is requested.
     </p>
-  </Section>
-
-  <Section title="Welcome video">
-    <p>{videoPlaceholders[0].summary}</p>
-  </Section>
-
-  <Section title="Longer presentation video">
-    <p>{videoPlaceholders[1].summary}</p>
+    <div class="video-stack">
+      {videos.map((video) => (
+        <LazyVideoPlayer
+          title={video.title}
+          summary={video.summary}
+          poster={video.poster}
+          sources={video.sources}
+          defaultQuality={video.defaultQuality}
+        />
+      ))}
+    </div>
   </Section>
 </MainLayout>
