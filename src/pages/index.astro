@@ -4,6 +4,7 @@ import ContentCard from "../components/ContentCard.astro";
 import Icon from "../components/Icon.astro";
 import LazyVideoPlayer from "../components/LazyVideoPlayer.astro";
 import Section from "../components/Section.astro";
+import { buildPersonSchema, buildWebsiteSchema } from "../lib/seo";
 import MainLayout from "../layouts/MainLayout.astro";
 import welcomeVideoHigh from "../content/videos/welcome-video-high.mp4?url";
 import welcomeVideoLow from "../content/videos/welcome-video-low.mp4?url";
@@ -30,6 +31,7 @@ const aboutHighlights = aboutPageContent.stats.slice(0, 3);
 <MainLayout
   title="Home"
   description="Fact-first homepage for Kaloyan Asenov, with concise previews of background, support areas, case studies, articles, videos, and contact details."
+  schema={[buildWebsiteSchema(), buildPersonSchema()]}
 >
   <section class="hero home-hero">
     <div class="home-hero-copy">

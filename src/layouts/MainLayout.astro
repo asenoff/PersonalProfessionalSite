@@ -1,22 +1,33 @@
 ---
+import type { SeoSchemaInput } from "../lib/seo";
 import SeoHead from "../components/SeoHead.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import { buildDefaultPageSchema } from "../lib/seo";
 import "../styles/global.css";
 
 interface Props {
   title?: string;
   description?: string;
   canonicalPath?: string;
+  robots?: string;
+  schema?: SeoSchemaInput;
   ogType?: "website" | "article";
+  publishedAt?: string;
 }
 
 const {
   title,
   description,
   canonicalPath = Astro.url.pathname,
-  ogType = "website"
+  robots = "index,follow",
+  schema,
+  ogType = "website",
+  publishedAt
 } = Astro.props;
+
+const resolvedSchema =
+  schema ?? buildDefaultPageSchema({ title, description, path: canonicalPath });
 ---
 
 <!doctype html>
@@ -26,7 +37,10 @@ const {
       title={title}
       description={description}
       canonicalPath={canonicalPath}
+      robots={robots}
+      schema={resolvedSchema}
       ogType={ogType}
+      publishedAt={publishedAt}
     />
   </head>
   <body class="site-shell">

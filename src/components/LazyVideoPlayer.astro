@@ -10,7 +10,7 @@ interface Props {
   title: string;
   summary?: string;
   poster: string;
-  sources: VideoSource[];
+  sources: ReadonlyArray<VideoSource>;
   defaultQuality?: string;
 }
 
@@ -64,10 +64,22 @@ const playerConfig = JSON.stringify({
     </label>
   </div>
 
-  <script type="application/json" data-video-config set:html={playerConfig}></script>
+  <script type="application/json" data-video-config is:inline set:html={playerConfig}></script>
 </article>
 
 <script>
+  type ClientVideoSource = {
+    value: string;
+    src: string;
+    type?: string;
+  };
+
+  type PlayerConfig = {
+    poster?: string;
+    defaultQuality?: string;
+    sources?: ClientVideoSource[];
+  };
+
   const initializeLazyVideoPlayers = () => {
     document.querySelectorAll("[data-lazy-video-player]").forEach((player) => {
       if (!(player instanceof HTMLElement) || player.dataset.videoReady === "true") {
@@ -90,7 +102,7 @@ const playerConfig = JSON.stringify({
         return;
       }
 
-      const config = JSON.parse(configElement.textContent || "{}");
+      const config = JSON.parse(configElement.textContent || "{}") as PlayerConfig;
       const sources = Array.isArray(config.sources) ? config.sources : [];
 
       if (sources.length === 0) {
@@ -98,62 +110,63 @@ const playerConfig = JSON.stringify({
       }
 
       let activeQuality = qualitySelect.value || config.defaultQuality || sources[0].value;
-      let videoElement = null;
+      let videoElement: HTMLVideoElement | null = null;
 
-      const getSourceByQuality = (quality) =>
-        sources.find((source) => source.value === quality) || sources[0];
+      const getSourceByQuality = (quality: string): ClientVideoSource =>
+        sources.find((source: ClientVideoSource) => source.value === quality) || sources[0];
 
-      const setVideoSource = (quality, autoplay = false) => {
+      const setVideoSource = (quality: string, autoplay = false) => {
         if (!(videoElement instanceof HTMLVideoElement)) {
           return;
         }
 
+        const activeVideo = videoElement;
         const source = getSourceByQuality(quality);
-        const previousTime = Number.isFinite(videoElement.currentTime)
-          ? videoElement.currentTime
+        const previousTime = Number.isFinite(activeVideo.currentTime)
+          ? activeVideo.currentTime
           : 0;
-        const shouldResume = autoplay || !videoElement.paused;
+        const shouldResume = autoplay || !activeVideo.paused;
 
-        if (videoElement.dataset.activeSrc === source.src) {
+        if (activeVideo.dataset.activeSrc === source.src) {
           if (shouldResume) {
-            videoElement.play().catch(() => {});
+            activeVideo.play().catch(() => {});
           }
 
           return;
         }
 
-        videoElement.dataset.activeSrc = source.src;
+        activeVideo.dataset.activeSrc = source.src;
 
         const handleLoadedMetadata = () => {
-          if (previousTime > 0 && Number.isFinite(videoElement.duration)) {
+          if (previousTime > 0 && Number.isFinite(activeVideo.duration)) {
             const safeTime = Math.min(
               previousTime,
-              Math.max(0, videoElement.duration - 0.25)
+              Math.max(0, activeVideo.duration - 0.25)
             );
 
             if (safeTime > 0) {
-              videoElement.currentTime = safeTime;
+              activeVideo.currentTime = safeTime;
             }
           }
 
           if (shouldResume) {
-            videoElement.play().catch(() => {});
+            activeVideo.play().catch(() => {});
           }
         };
 
-        videoElement.addEventListener("loadedmetadata", handleLoadedMetadata, {
+        activeVideo.addEventListener("loadedmetadata", handleLoadedMetadata, {
           once: true
         });
 
-        while (videoElement.firstChild) {
-          videoElement.removeChild(videoElement.firstChild);
+        while (activeVideo.firstChild) {
+          activeVideo.removeChild(activeVideo.firstChild);
         }
 
         const sourceElement = document.createElement("source");
         sourceElement.src = source.src;
         sourceElement.type = source.type || "video/mp4";
-        videoElement.appendChild(sourceElement);
-        videoElement.load();
+        activeVideo.appendChild(sourceElement);
+        activeVideo.load();
       };
 
       const activatePlayer = () => {
@@ -167,7 +180,7 @@ const playerConfig = JSON.stringify({
         videoElement.controls = true;
         videoElement.playsInline = true;
         videoElement.preload = "metadata";
-        videoElement.poster = config.poster;
+        videoElement.poster = config.poster || "";
 
         stage.replaceChildren(videoElement);
         setVideoSource(activeQuality, true);

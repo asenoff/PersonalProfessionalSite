@@ -1,3 +1,5 @@
+import { siteOrigin } from "../config/site-origin.js";
+
 export type NavItem = {
   label: string;
   href: string;
@@ -131,10 +133,15 @@ export const siteConfig = {
     "10+ years in .NET and SQL Server, focused on backend development, query analysis, reporting performance, and legacy system improvement.",
   availability:
     "Open to fully remote part-time opportunities, around 4 hours per day.",
-  siteUrl: "https://asenoff.net",
+  siteUrl: siteOrigin,
   defaultTitle: "Kaloyan Asenov | Senior .NET Backend Engineer",
   defaultDescription:
-    "Personal professional site for Kaloyan Asenov, a senior .NET backend engineer focused on data-intensive and production-critical systems."
+    "Personal professional site for Kaloyan Asenov, a senior .NET backend engineer focused on data-intensive and production-critical systems.",
+  seo: {
+    locale: "en_US",
+    sameAs: ["https://www.linkedin.com/in/asenoff/", "https://github.com/asenoff"],
+    defaultOgImageAlt: "Preview image for Kaloyan Asenov's professional website"
+  }
 } as const;
 
 export const navItems: NavItem[] = [

@@ -1,5 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
+import { buildArticleSchema } from "../../lib/seo";
 import MainLayout from "../../layouts/MainLayout.astro";
 
 export async function getStaticPaths() {
@@ -20,7 +21,15 @@ const { Content } = await article.render();
   title={article.data.title}
   description={article.data.description}
   canonicalPath={`/articles/${article.slug}`}
+  schema={buildArticleSchema({
+    title: article.data.title,
+    description: article.data.description,
+    path: `/articles/${article.slug}`,
+    publishedAt: article.data.publishedAt,
+    tags: article.data.tags
+  })}
   ogType="article"
+  publishedAt={article.data.publishedAt}
 >
   <article class="detail-content">
     <p class="eyebrow">Articles</p>
